@@ -38,7 +38,7 @@ public class TweetResponseDAO {
 
     public TweetResponseDAO fromTweet(Tweet tweet) {
         TweetResponseDAO tweetDAO = new TweetResponseDAO();
-        UserResponseDAO userDAO = new UserResponseDAO(tweet.getUser().getEmail(), tweet.getUser().getFullName());
+        UserResponseDAO userDAO = new UserResponseDAO(tweet.getUser().getEmail(), tweet.getUser().getNames(), tweet.getUser().getPassword());
 
         tweetDAO.setId(String.valueOf(tweet.getId()));
         tweetDAO.setAuthor(userDAO);

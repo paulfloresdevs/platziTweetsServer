@@ -14,5 +14,5 @@ public class TweetDAO {
     private Double latitude;
     private Double longitude;
 
-    private Long userId;
+    private String userEmail;
 }

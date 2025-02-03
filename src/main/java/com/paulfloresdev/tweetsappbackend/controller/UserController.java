@@ -1,6 +1,7 @@
 package com.paulfloresdev.tweetsappbackend.controller;
 
-import com.paulfloresdev.tweetsappbackend.DAO.User.UserDAO;
+import com.paulfloresdev.tweetsappbackend.DAO.User.UserAuthenticateDAO;
+import com.paulfloresdev.tweetsappbackend.DAO.User.UserRequestDAO;
 import com.paulfloresdev.tweetsappbackend.DAO.User.UserResponseDAO;
 import com.paulfloresdev.tweetsappbackend.models.User;
 import com.paulfloresdev.tweetsappbackend.services.UserService;
@@ -25,20 +26,20 @@ public class UserController {
 
     // Register
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDAO> userRegistration(@RequestBody User user) {
+    public ResponseEntity<UserResponseDAO> userRegistration(@RequestBody UserRequestDAO user) {
         return this.service.registerUser(Optional.of(user));
     }
 
     // Login
     @PostMapping("/auth")
-    public ResponseEntity<UserResponseDAO> userAuthentication(@RequestBody UserDAO user) {
+    public ResponseEntity<UserResponseDAO> userAuthentication(@RequestBody UserAuthenticateDAO user) {
         return this.service.authenticateUser(Optional.of(user));
     }
 
     // Get user by id
     @GetMapping("/user")
-    public ResponseEntity<User> getUser(@RequestParam Long id) {
-        Optional<User> user = this.service.getUser(id);
+    public ResponseEntity<User> getUser(@RequestParam String email) {
+        Optional<User> user = this.service.getUser(email);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 

@@ -15,15 +15,27 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @Column(unique = true, nullable = false)
     private String email;
-    private String fullName;
+    private String names;
+    private String nickname;
+
+    @JsonIgnore
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
-    private List<Tweet> tweets = new ArrayList<>();
+    private List<Tweet> tweets;
 
+    public User(String email, String names, String nickname, String password) {
+        this.email = email;
+        this.names = names;
+        this.nickname = nickname;
+        this.password = password;
+        this.tweets = new ArrayList<>();
+    }
+
+    public User() {
+
+    }
 }

@@ -1,22 +1,24 @@
 package com.paulfloresdev.tweetsappbackend.DAO.User;
 
+import com.paulfloresdev.tweetsappbackend.models.User;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class UserResponseDAO {
-    private String email;
-    private String names;
-    private String nickname;
+    User user;
 
-    public UserResponseDAO(String email, String names) {
-        this.email = email;
-        this.names = names;
-        NicknameConstructor(email, names);
+    public UserResponseDAO(String email, String names, String password) {
+        this.user = new User(
+                email,
+                names,
+                NicknameConstructor(email, names),
+                password
+        );
     }
 
-    private void NicknameConstructor(String email, String names){
+    private String NicknameConstructor(String email, String names){
 
         StringBuilder nicknameBuilder = new StringBuilder();
 
@@ -27,6 +29,6 @@ public class UserResponseDAO {
                 nicknameBuilder.append(names.charAt(i));
             }
         }
-        this.nickname = nicknameBuilder.toString();
+        return nicknameBuilder.toString();
     }
 }

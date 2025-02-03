@@ -33,7 +33,7 @@ public class TweetsService {
 
         if (isValidTweets) {
             TweetDAO tweetDAO = tweetDAOOptional.get();
-            User author = this.userService.getUser(tweetDAO.getUserId()).get();
+            User author = this.userService.getUser(tweetDAO.getUserEmail()).get();
 
             Tweet tweet = TweetsUtils.setTweetParams(tweetDAO, author);
             this.tweetsRepository.save(tweet);

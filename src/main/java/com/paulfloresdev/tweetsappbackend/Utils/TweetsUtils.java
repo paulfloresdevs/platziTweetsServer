@@ -27,7 +27,7 @@ public class TweetsUtils {
         boolean isTextPresent = tweetDAO.get().getText() != null && !tweetDAO.get().getText().isEmpty();
         boolean isLatitudePresent = tweetDAO.get().getLatitude() != 0;
         boolean isLongitudePresent = tweetDAO.get().getLongitude() != 0;
-        boolean isUserExist = userService.isUserExist(tweetDAO.get().getUserId());
+        boolean isUserExist = userService.isUserExist(tweetDAO.get().getUserEmail());
 
         return isTextPresent && isLatitudePresent && isLongitudePresent && isUserExist;
     }
