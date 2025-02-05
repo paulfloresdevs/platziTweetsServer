@@ -7,9 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserResponseDAO extends ResponseDAO {
+
     User user;
 
     public UserResponseDAO(String email, String names, String password) {
+        super("Operation successfully completed");
         this.user = new User(
                 email,
                 names,
