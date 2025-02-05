@@ -3,6 +3,7 @@ package com.paulfloresdev.tweetsappbackend.DAO.Tweet;
 import com.paulfloresdev.tweetsappbackend.DAO.User.UserResponseDAO;
 import com.paulfloresdev.tweetsappbackend.models.Location;
 import com.paulfloresdev.tweetsappbackend.models.Tweet;
+import com.paulfloresdev.tweetsappbackend.models.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class TweetResponseDAO {
     private String id;
-    private UserResponseDAO author;
+    private User author;
     private String imageUrl;
     private String text;
     private String videoUrl;
@@ -38,10 +39,9 @@ public class TweetResponseDAO {
 
     public TweetResponseDAO fromTweet(Tweet tweet) {
         TweetResponseDAO tweetDAO = new TweetResponseDAO();
-        UserResponseDAO userDAO = new UserResponseDAO(tweet.getUser().getEmail(), tweet.getUser().getNames(), tweet.getUser().getPassword());
 
         tweetDAO.setId(String.valueOf(tweet.getId()));
-        tweetDAO.setAuthor(userDAO);
+        tweetDAO.setAuthor(tweet.getUser());
         tweetDAO.setImageUrl(tweet.getImageUrl());
         tweetDAO.setText(tweet.getText());
         tweetDAO.setVideoUrl(tweet.getVideoUrl());
