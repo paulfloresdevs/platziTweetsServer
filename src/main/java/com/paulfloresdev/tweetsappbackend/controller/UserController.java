@@ -1,5 +1,6 @@
 package com.paulfloresdev.tweetsappbackend.controller;
 
+import com.paulfloresdev.tweetsappbackend.DAO.User.ResponseDAO;
 import com.paulfloresdev.tweetsappbackend.DAO.User.UserAuthenticateDAO;
 import com.paulfloresdev.tweetsappbackend.DAO.User.UserRequestDAO;
 import com.paulfloresdev.tweetsappbackend.DAO.User.UserResponseDAO;
@@ -26,13 +27,13 @@ public class UserController {
 
     // Register
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDAO> userRegistration(@RequestBody UserRequestDAO user) {
+    public ResponseEntity<ResponseDAO> userRegistration(@RequestBody UserRequestDAO user) {
         return this.service.registerUser(Optional.of(user));
     }
 
     // Login
     @PostMapping("/auth")
-    public ResponseEntity<UserResponseDAO> userAuthentication(@RequestBody UserAuthenticateDAO user) {
+    public ResponseEntity<ResponseDAO> userAuthentication(@RequestBody UserAuthenticateDAO user) {
         return this.service.authenticateUser(Optional.of(user));
     }
 

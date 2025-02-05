@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserResponseDAO {
+public class UserResponseDAO extends ResponseDAO {
     User user;
 
     public UserResponseDAO(String email, String names, String password) {

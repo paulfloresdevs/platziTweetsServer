@@ -1,8 +1,6 @@
 package com.paulfloresdev.tweetsappbackend.services;
 
-import com.paulfloresdev.tweetsappbackend.DAO.User.UserAuthenticateDAO;
-import com.paulfloresdev.tweetsappbackend.DAO.User.UserRequestDAO;
-import com.paulfloresdev.tweetsappbackend.DAO.User.UserResponseDAO;
+import com.paulfloresdev.tweetsappbackend.DAO.User.*;
 import com.paulfloresdev.tweetsappbackend.models.User;
 import com.paulfloresdev.tweetsappbackend.Repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +25,11 @@ public class UserService {
     /*
         Register a user
      */
-    public ResponseEntity<UserResponseDAO> registerUser(Optional<UserRequestDAO> user) {
+    public ResponseEntity<ResponseDAO> registerUser(Optional<UserRequestDAO> user) {
 
         // Check if the user is empty and if the user already exists
-        if (user.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        if (isUserExist(user.get().getEmail())) return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        if (user.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDAO("You must provide an email, names and a password"));
+        if (isUserExist(user.get().getEmail())) return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDAO("User already exists"));
 
         // Create a new userResponse with the user data
         UserResponseDAO userResponse = new UserResponseDAO(
@@ -49,13 +47,13 @@ public class UserService {
        // Return the userResponse if the user was saved, else return an internal server error
        return userFromDB.isPresent()
                ? ResponseEntity.ok(userResponse)
-               : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+               : ResponseEntity.internalServerError().body(new ErrorResponseDAO("User cannot be registered"));
     }
 
     /*
         Authenticate a user
      */
-    public ResponseEntity<UserResponseDAO> authenticateUser(Optional<UserAuthenticateDAO> user) {
+    public ResponseEntity<ResponseDAO> authenticateUser(Optional<UserAuthenticateDAO> user) {
 
         // Check if the user is empty
         if (user.isPresent()) {
@@ -74,15 +72,15 @@ public class UserService {
                     return ResponseEntity.ok(userResponse);
                 } else {
                     // Return unauthorized if the password is incorrect
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDAO("Password is incorrect"));
                 }
             } else {
                 // Return not found if the user does not exist
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDAO("User not found"));
             }
         }
         // Return bad request if the user is empty
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDAO("You must provide an email and a password"));
     }
 
     /*
