@@ -6,17 +6,21 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserResponseDAO extends ResponseDAO {
+public class UserResponseDAO implements ResponseDAO {
 
     User user;
+    private String message;
+    private int status;
 
-    public UserResponseDAO(String email, String names, String password) {
-        super("Operation successfully completed");
+    public UserResponseDAO(String email, String names, String password, String profileImageUrl) {
+        this.message = "Operation successfully completed";
+        this.status = 200;
         this.user = new User(
                 email,
                 names,
                 NicknameConstructor(email, names),
-                password
+                password,
+                profileImageUrl
         );
     }
 
@@ -32,5 +36,15 @@ public class UserResponseDAO extends ResponseDAO {
             }
         }
         return nicknameBuilder.toString();
+    }
+
+    @Override
+    public String getStatus() {
+        return "Status: " + this.status;
+    }
+
+    @Override
+    public String getMessage() {
+        return "Success: " + this.message;
     }
 }
