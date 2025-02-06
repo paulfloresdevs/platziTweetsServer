@@ -10,4 +10,5 @@ public class UserRequestDAO {
     private String email;
     private String password;
     private String names;
+    private String profileImageUrl;
 }
