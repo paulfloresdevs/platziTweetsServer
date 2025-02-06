@@ -28,14 +28,24 @@ public class UserService {
     public ResponseEntity<ResponseDAO> registerUser(Optional<UserRequestDAO> user) {
 
         // Check if the user is empty and if the user already exists
-        if (user.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDAO("You must provide an email, names and a password"));
-        if (isUserExist(user.get().getEmail())) return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDAO("User already exists"));
+        if (user.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new ErrorResponseDAO(
+                        "You must provide an email, names and a password",
+                        HttpStatus.BAD_REQUEST.value()
+                ));
+
+        if (isUserExist(user.get().getEmail())) return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                new ErrorResponseDAO(
+                        "User already exists",
+                        HttpStatus.CONFLICT.value()
+                ));
 
         // Create a new userResponse with the user data
         UserResponseDAO userResponse = new UserResponseDAO(
                 user.get().getEmail(),
                 user.get().getNames(),
-                user.get().getPassword()
+                user.get().getPassword(),
+                user.get().getProfileImageUrl()
         );
 
         // Save the user in the database
@@ -46,8 +56,12 @@ public class UserService {
 
        // Return the userResponse if the user was saved, else return an internal server error
        return userFromDB.isPresent()
-               ? ResponseEntity.ok(userResponse)
-               : ResponseEntity.internalServerError().body(new ErrorResponseDAO("User cannot be registered"));
+               ? ResponseEntity.ok().body(userResponse)
+               : ResponseEntity.internalServerError().body(
+                       new ErrorResponseDAO(
+                               "User cannot be registered",
+                               HttpStatus.INTERNAL_SERVER_ERROR.value()
+                       ));
     }
 
     /*
@@ -67,20 +81,33 @@ public class UserService {
                     UserResponseDAO userResponse = new UserResponseDAO(
                             userFromDB.get().getEmail(),
                             userFromDB.get().getNames(),
-                            userFromDB.get().getPassword()
+                            userFromDB.get().getPassword(),
+                            userFromDB.get().getProfileImageUrl()
                     );
                     return ResponseEntity.ok(userResponse);
                 } else {
                     // Return unauthorized if the password is incorrect
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDAO("Password is incorrect"));
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                            new ErrorResponseDAO(
+                                    "Password is incorrect",
+                                    HttpStatus.UNAUTHORIZED.value()
+                            ));
                 }
             } else {
                 // Return not found if the user does not exist
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDAO("User not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                        new ErrorResponseDAO(
+                                "User not found",
+                                HttpStatus.NOT_FOUND.value()
+                        ));
             }
         }
         // Return bad request if the user is empty
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDAO("You must provide an email and a password"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new ErrorResponseDAO(
+                        "You must provide an email and a password",
+                        HttpStatus.BAD_REQUEST.value()
+                ));
     }
 
     /*
