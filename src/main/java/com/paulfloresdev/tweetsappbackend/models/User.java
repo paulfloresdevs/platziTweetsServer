@@ -19,6 +19,7 @@ public class User {
     private String email;
     private String names;
     private String nickname;
+    private String profileImageUrl;
 
     @JsonIgnore
     private String password;
@@ -27,9 +28,10 @@ public class User {
     @JsonManagedReference
     private List<Tweet> tweets;
 
-    public User(String email, String names, String nickname, String password) {
+    public User(String email, String names, String nickname, String password, String profileImageUrl) {
         this.email = email;
         this.names = names;
+        this.profileImageUrl = profileImageUrl;
         this.nickname = nickname;
         this.password = password;
         this.tweets = new ArrayList<>();
