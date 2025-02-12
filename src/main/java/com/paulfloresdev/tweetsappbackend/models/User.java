@@ -14,6 +14,8 @@ import java.util.List;
 @Entity(name = "users")
 public class User {
 
+    public static User currentUser;
+
     @Id
     @Column(unique = true, nullable = false)
     private String email;
